@@ -1,5 +1,4 @@
-# Barcelona API
-Express API
+# Loto Pampero API
 
 Example of sequelize-cli with a User model:
 npx sequelize-cli init
