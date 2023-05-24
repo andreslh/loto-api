@@ -5,8 +5,7 @@ const { authenticateJWT } = require('../validators/authentication');
 
 const apiRouter = express.Router();
 
-//apiRouter.use('/clients', authenticateJWT, clientsRouter);
 apiRouter.use('/users', usersRouter);
-apiRouter.use('/clients', clientsRouter);
+apiRouter.use('/clients', authenticateJWT, clientsRouter);
 
 module.exports = apiRouter;
