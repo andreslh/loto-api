@@ -12,6 +12,22 @@ module.exports = {
         type: Sequelize.STRING,
         unique: true,
       },
+      n1: {
+        type: Sequelize.INTEGER,
+        unique: false,
+      },
+      n2: {
+        type: Sequelize.INTEGER,
+        unique: false,
+      },
+      n3: {
+        type: Sequelize.INTEGER,
+        unique: false,
+      },
+      n4: {
+        type: Sequelize.INTEGER,
+        unique: false,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

@@ -1,4 +1,4 @@
-const {  } = require('../models');
+const { Client } = require('../models');
 const { validateNotRepeatedModel, handleError } = require('./validator');
 
 const REPEATED_ERROR_MESSAGE = 'Ya existe un cliente con el nombre elegido';
