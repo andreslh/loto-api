@@ -60,15 +60,15 @@ const login = async (req, res) => {
   });
 
   if (user && isPasswordCorrect(password, user.password)) {
-    const { email, role } = user;
+    const { email, role, id, name } = user;
     const accessToken = getAccessToken(email, role);
     const refreshToken = getRefreshToken(email, role);
     await addRefreshToken(refreshToken);
 
     res.json({
+      user,
       accessToken,
       refreshToken,
-      role,
     });
   } else {
     res.status(400).json({ message: 'Email or password incorrect' });

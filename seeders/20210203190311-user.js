@@ -5,6 +5,7 @@ module.exports = {
       [
         {
           email: 'admin@admin.com',
+          name: 'Admin Ledesma',
           password:
             '$2b$10$8aKJ..HiCoOnVP6BvcnrIOD.vg1wl429cDjjtrbFFnkI3RpQqy02O',
           role: 1,
@@ -13,6 +14,7 @@ module.exports = {
         },
         {
           email: 'seller@seller.com',
+          name: 'Seller Ledesma',
           password:
             '$2b$10$8aKJ..HiCoOnVP6BvcnrIOD.vg1wl429cDjjtrbFFnkI3RpQqy02O',
           role: 2,
