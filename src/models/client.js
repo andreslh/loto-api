@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
       name: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: false,
       },
       n1: {
         type: DataTypes.INTEGER,
@@ -23,8 +24,18 @@ module.exports = (sequelize, DataTypes) => {
       n4: {
         type: DataTypes.INTEGER,
       },
+      userId: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+      }
     },
     {}
   );
+  Client.associate = function (models) {
+    Client.belongsTo(models.User, {
+      foreignKey: 'userId',
+      onDelete: 'CASCADE',
+    });
+  };
   return Client;
 };

@@ -21,6 +21,15 @@ module.exports = {
           createdAt: new Date(),
           updatedAt: new Date(),
         },
+        {
+          email: 'seller3@seller.com',
+          name: 'Ana Muscardin',
+          password:
+            '$2b$10$8aKJ..HiCoOnVP6BvcnrIOD.vg1wl429cDjjtrbFFnkI3RpQqy02O',
+          role: 2,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
       ],
       {}
     );
