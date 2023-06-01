@@ -66,7 +66,10 @@ const login = async (req, res) => {
     await addRefreshToken(refreshToken);
 
     res.json({
-      user,
+      user: {
+        name: user.name,
+        role: user.role
+      },
       accessToken,
       refreshToken,
     });
