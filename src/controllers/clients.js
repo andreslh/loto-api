@@ -50,7 +50,7 @@ const post = async (req, res) => {
     const clientBody = {...req.body};
     clientBody.userId = await getUserId(req);
 
-    const client = await Client.create(req.body);
+    const client = await Client.create(clientBody);
     return res.status(201).json({ client });
   } catch (error) {
     return handleError(error, res, REPEATED_ERROR_MESSAGE);
@@ -64,7 +64,7 @@ const put = async (req, res) => {
     const userId = await getUserId(req);
     await validateNotRepeated({ name, id, userId });
 
-    const client = await Client.update({ ...req.body }, { where: { id, userId } });
+    const client = await Client.update({ ...req.body, userId }, { where: { id, userId } });
     if (client[0] > 0) {
       return res.sendStatus(200);
     }
