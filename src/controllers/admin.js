@@ -58,16 +58,26 @@ const edit = async (req, res) => {
     });
 
     if (user) {
+      let newUser = {};
 
-      if (email !== user.email) {
+      if (email && email !== user.email) {
         const isRepateted = await isEmailRepeated(email);
         if (isRepateted) {
           return res.status(400).json({ error: 'Email is already in use' });
         }
+        newUser.email = email;
+      }
+
+      if (name) {
+        newUser.name = name;
+      }
+
+      if (password) {
+        newUser.password = getHashedPassword(password)
       }
 
       const userUpdated = await User.update(
-        { name, email, password: getHashedPassword(password) },
+        newUser,
         { where: { id } }
       );
       if (userUpdated) {
