@@ -49,15 +49,25 @@ const getByRole = async (req, res) => {
   }
 };
 
-const resetPassword = async (req, res) => {
+const edit = async (req, res) => {
   try {
-    const { id, newPassword } = req.body;
+    const { id } = req.params;
+    const { name, email, password } = req.body;
     const user = await User.findOne({
       where: { id },
     });
+
     if (user) {
+
+      if (email !== user.email) {
+        const isRepateted = await isEmailRepeated(email);
+        if (isRepateted) {
+          return res.status(400).json({ error: 'Email is already in use' });
+        }
+      }
+
       const userUpdated = await User.update(
-        { password: getHashedPassword(newPassword) },
+        { name, email, password: getHashedPassword(password) },
         { where: { id } }
       );
       if (userUpdated) {
@@ -87,6 +97,6 @@ const remove = async (req, res) => {
 module.exports = {
   signup,
   getByRole,
-  resetPassword,
+  edit,
   remove
 };
