@@ -5,15 +5,12 @@ const { ROLES, isNotAdmin } = require('../auth/roles');
 
 const getHashedPassword = (password) => bcrypt.hashSync(password, 10);
 
-const isPasswordCorrect = (password, comparePassword) =>
-  bcrypt.compareSync(password, comparePassword);
-
 const isEmailRepeated = async (email) =>
   (await User.findOne({ where: { email } })) ? true : false;
 
 const signup = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { name, email, password } = req.body;
     const { user: loggedUser } = req;
 
     if (isNotAdmin(loggedUser)) {
@@ -26,6 +23,7 @@ const signup = async (req, res) => {
     }
 
     const user = await User.create({
+      name,
       email,
       password: getHashedPassword(password),
       role: ROLES.seller,
