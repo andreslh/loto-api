@@ -25,9 +25,6 @@ const getHashedPassword = (password) => bcrypt.hashSync(password, 10);
 const isPasswordCorrect = (password, comparePassword) =>
   bcrypt.compareSync(password, comparePassword);
 
-const isEmailRepeated = async (email) =>
-  (await User.findOne({ where: { email } })) ? true : false;
-
 const login = async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({
