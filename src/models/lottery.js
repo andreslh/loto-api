@@ -98,5 +98,10 @@ module.exports = (sequelize, DataTypes) => {
     },
     {}
   );
+  Lottery.associate = function (models) {
+    Lottery.hasMany(models.Play, {
+      foreignKey: 'lotteryId',
+    });
+  };
   return Lottery;
 };

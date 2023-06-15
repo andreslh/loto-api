@@ -1,16 +1,11 @@
 module.exports = (sequelize, DataTypes) => {
-  const Client = sequelize.define(
-    'Client',
+  const Play = sequelize.define(
+    'Play',
     {
       id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
-      },
-      name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: false,
       },
       n1: {
         type: DataTypes.INTEGER,
@@ -24,21 +19,28 @@ module.exports = (sequelize, DataTypes) => {
       n4: {
         type: DataTypes.INTEGER,
       },
-      userId: {
+      lotteryId: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
+        unique: false
+      },
+      clientId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        unique: false
       }
     },
     {}
   );
-  Client.associate = function (models) {
-    Client.belongsTo(models.User, {
-      foreignKey: 'userId',
+  Play.associate = function (models) {
+    Play.belongsTo(models.Client, {
+      foreignKey: 'clientId',
       onDelete: 'CASCADE',
     });
-    Client.hasMany(models.Play, {
-      foreignKey: 'clientId',
+    Play.belongsTo(models.Lottery, {
+      foreignKey: 'lotteryId',
+      onDelete: 'CASCADE',
     });
   };
-  return Client;
+  return Play;
 };

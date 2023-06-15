@@ -2,6 +2,7 @@ const { validationResult } = require('express-validator');
 
 const clientsValidations = require('./clients');
 const lotteryValidations = require('./lottery');
+const playsValidations = require('./plays');
 
 const validate = (req, res, next) => {
   const errors = validationResult(req);
@@ -19,5 +20,6 @@ const validate = (req, res, next) => {
 module.exports = {
   clientsValidations,
   lotteryValidations,
+  playsValidations,
   validate,
 };
