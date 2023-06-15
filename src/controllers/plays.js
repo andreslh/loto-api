@@ -12,24 +12,6 @@ const get = async (req, res) => {
   }
 };
 
-const getById = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const userId = await getUserId(req);
-    const client = await Client.findOne({
-      where: { id, userId }
-    });
-    if (client) {
-      return res.status(200).json({ client });
-    }
-    return res
-      .status(404)
-      .send('Client with the specified ID does not exists');
-  } catch (error) {
-    return res.status(500).send(error.message);
-  }
-};
-
 const post = async (req, res) => {
   try {
     /*
@@ -43,7 +25,6 @@ const post = async (req, res) => {
     */
     const { clientId, n1, n2, n3, n4 } = req.body;
     const sellerId = await getUserId(req);
-    console.log(sellerId);
     
     const seller = await User.findOne({ where: { id: sellerId } });
     if (seller.role !== ROLES.seller) {
@@ -73,33 +54,24 @@ const post = async (req, res) => {
   }
 };
 
-const put = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { name } = req.body;
-    const userId = await getUserId(req);
-    await validateNotRepeated({ name, id, userId });
-
-    const client = await Client.update({ ...req.body, userId }, { where: { id, userId } });
-    if (client[0] > 0) {
-      return res.sendStatus(200);
-    }
-    throw new Error('Client not found');
-  } catch (error) {
-    console.log(error);
-    return handleError(error, res, REPEATED_ERROR_MESSAGE);
-  }
-};
-
 const remove = async (req, res) => {
   try {
     const { id } = req.params;
     const userId = await getUserId(req);
-    const deleted = await Client.destroy({ where: { id, userId } });
-    if (deleted) {
-      return res.status(204).send();
+    const play = await Play.findOne({where: { id }});
+    if (play) {
+      const client = await Client.findOne({ where: { id: play.clientId }});
+      if (client.userId === userId) {
+        const deleted = await Play.destroy({ where: { id: play.id } });
+        if (deleted) {
+          return res.status(204).send();
+        }
+        throw new Error('Error');
+      }
+      throw new Error('El loto no pertenece al vendedor');
     }
-    throw new Error('Client not found');
+    
+    throw new Error('Play not found');
   } catch (error) {
     return res.status(500).send(error.message);
   }
@@ -107,8 +79,6 @@ const remove = async (req, res) => {
 
 module.exports = {
   get,
-  getById,
   post,
-  put,
   remove,
 };
