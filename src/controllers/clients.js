@@ -1,3 +1,4 @@
+const getUserId = require('../auth/getUserId');
 const { Client, User } = require('../models');
 const { validateNotRepeatedModel, handleError } = require('./validator');
 
@@ -5,14 +6,6 @@ const REPEATED_ERROR_MESSAGE = 'Ya existe un cliente con el nombre elegido';
 
 const validateNotRepeated = async (fields) =>
   await validateNotRepeatedModel(Client, fields, REPEATED_ERROR_MESSAGE);
-
-const getUserId = async (req) => {
-  const { email } = req.user;
-  const {id} = await User.findOne({
-    where: { email: email }
-  });
-  return id;
-};
 
 const get = async (req, res) => {
   try {

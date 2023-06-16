@@ -17,7 +17,7 @@ const authenticateJWT = (req, res, next) => {
       next();
     });
   } else {
-    res.sendStatus(401);
+    return res.status(401).json({ message: 'Unathorized' });
   }
 };
 
@@ -25,7 +25,7 @@ const isAdmin = (req, res, next) => {
   const user = req.user;
 
   if (isNotAdmin(user)) {
-    res.sendStatus(401);
+    return res.status(401).json({ message: 'Unathorized' });
   }
   next();
 };

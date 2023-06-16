@@ -8,7 +8,6 @@ const {
 } = require('../auth/refreshTokens');
 
 const { User } = require('../models');
-const { ROLES, isNotAdmin } = require('../auth/roles');
 
 const EXPIRATION_TIME = '1d';
 

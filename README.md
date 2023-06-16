@@ -56,7 +56,10 @@ Run seed file:
 npx sequelize-cli db:seed:all
 
 Si hubo cambios en models, migrations o seeds:
--Ir a PGAdmin, borrar la db loto
--Ejectutar: npx sequelize-cli db:create
--Ejecutar: npx sequelize-cli db:migrate
--Ejecutar: npx sequelize-cli db:seed:all
+1- Ir a PGAdmin, borrar la db loto
+2- Ejectutar: npx sequelize-cli db:create
+3- Ejecutar: npx sequelize-cli db:migrate
+4- Ejecutar: npx sequelize-cli db:seed:all
+
+Pasos 2, 3 y 4 juntos:
+npx sequelize-cli db:create && npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all
