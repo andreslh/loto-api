@@ -1,12 +1,20 @@
+const { Op } = require('sequelize');
 const getUserId = require('../auth/getUserId');
 const { ROLES } = require('../auth/roles');
-const { Client, User, Lottery, Play } = require('../models');
+const { Client, User, Lottery, Play, sequelize } = require('../models');
 
 const get = async (req, res) => {
   try {
     const userId = await getUserId(req);
-    const clients = await Client.findAll({ order: [['id', 'ASC']], where: { userId} });
-    return res.status(200).json({ clients });
+    const lottery = await Lottery.findOne({where: { current: true}});
+    const plays = await sequelize.query(`
+      select c."id" as "clientId", c."name", p."id", p."n1", p."n2", p."n3", p."n4" from "Plays" p
+      join "Clients" c on p."clientId" = c."id"
+      join "Users" u on c."userId" = u."id"
+      where p."lotteryId" = ${lottery.id} 
+      and u."id" = ${userId}
+    `);
+    return res.status(200).json({ plays: plays[0] });
   } catch (error) {
     return res.status(500).send(error.message);
   }
