@@ -58,10 +58,8 @@ const post = async (req, res) => {
     const winnersWith3 = [];
     const winnersWith4 = [];
 
-    console.log(numbersToTen);
     plays.forEach(play => {
       const playNumbers = [play.dataValues.n1, play.dataValues.n2, play.dataValues.n3, play.dataValues.n4];
-      console.log(playNumbers);
       let matches = 0;
 
       playNumbers.forEach((number) => {
@@ -98,18 +96,18 @@ const post = async (req, res) => {
       current: false,
       // req.body tiene los 20 numeros
       ...req.body,
-      date: new Date().toLocaleDateString()
+      date: new Date().toLocaleDateString("en-US")
     }, { where: { id: currentLottery.id } });
     
 
     await Lottery.create({
       ...getEmptyNumbersObj(), 
-      date: new Date().toLocaleDateString(),
+      date: new Date().toLocaleDateString("en-US"),
       current: true
     });
     
     return res.status(201).json({
-      lottery: {...req.body, date: new Date().toLocaleDateString()},
+      lottery: {...req.body, date: new Date().toLocaleDateString("en-US")},
       winners: {
         with2: await formatWinners(winnersWith2),
         with3: await formatWinners(winnersWith3),
