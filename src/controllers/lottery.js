@@ -103,23 +103,24 @@ const post = async (req, res) => {
       if (matches === 2) {
         winnersWith2.push(play);
       }
-      if (matches === 3) {
-        winnersWith3.push(play);
-      }
       if (matches === 4) {
         winnersWith4.push(play);
       }
 
       if (matches === 3) {
         let isWinnerWith4 = false;
+
         playNumbers.forEach((number) => {
           if (numbersToTwenty.includes(number)) {
             isWinnerWith4 = true;
             return;
           }
         });
+        
         if (isWinnerWith4) {
           winnersWith4.push(play);
+        } else {
+          winnersWith3.push(play);
         }
       }
     });
