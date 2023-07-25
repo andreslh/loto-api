@@ -168,12 +168,17 @@ const put = async (req, res) => {
 const remove = async (req, res) => {
   try {
     const { id } = req.params;
+    const transaction = await sequelize.transaction();
     const deleted = await Lottery.destroy({ where: { id } });
     if (deleted) {
+      await Winner.destroy({ where: { lotteryId: id } });
+      await transaction.commit();
       return res.status(204).send();
     }
+    await transaction.rollback();
     throw new Error('Lottery not found');
   } catch (error) {
+    await transaction.rollback();
     return res.status(500).send(error.message);
   }
 };

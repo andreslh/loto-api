@@ -1,4 +1,5 @@
 const getUserId = require('../auth/getUserId');
+const { isNotAdmin } = require('../auth/roles');
 const { Client, User } = require('../models');
 const { validateNotRepeatedModel, handleError } = require('./validator');
 
@@ -11,6 +12,23 @@ const get = async (req, res) => {
   try {
     const userId = await getUserId(req);
     const clients = await Client.findAll({ order: [['id', 'ASC']], where: { userId} });
+    return res.status(200).json({ clients });
+  } catch (error) {
+    return res.status(500).send(error.message);
+  }
+};
+
+const getBySeller = async (req, res) => {
+  try {
+    const { user: loggedUser } = req;
+
+    if (isNotAdmin(loggedUser)) {
+      return res.sendStatus(403);
+    }
+
+    const { id: sellerId } = req.params;
+
+    const clients = await Client.findAll({ order: [['id', 'ASC']], where: { userId: sellerId} });
     return res.status(200).json({ clients });
   } catch (error) {
     return res.status(500).send(error.message);
@@ -84,6 +102,7 @@ const remove = async (req, res) => {
 
 module.exports = {
   get,
+  getBySeller,
   getById,
   post,
   put,
