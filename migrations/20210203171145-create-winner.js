@@ -42,7 +42,7 @@ module.exports = {
       clientId: {
         type: Sequelize.INTEGER,
         unique: false,
-        allowNull: false
+        allowNull: true
       },
       clientName: {
         type: Sequelize.STRING,

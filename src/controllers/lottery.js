@@ -55,15 +55,15 @@ const saveWinners = async (winners, lotteryId, numbersMatchCount, transaction) =
   let i = 0;
   for (const winner of winners) {
     const client = await Client.findOne({ where: { id: winner.clientId }});
-    const seller = await User.findOne({ where: { id: client.dataValues.userId }});
+    const seller = await User.findOne({ where: { id: winner.userId }});
     await Winner.create({
       n1: winners[i].n1,
       n2: winners[i].n2,
       n3: winners[i].n3,
       n4: winners[i].n4,
       lotteryId,
-      clientId: client.dataValues.id,
-      clientName: client.dataValues.name,
+      clientId: client?.dataValues?.id,
+      clientName: client?.dataValues?.name || winners[i].clientName,
       sellerId: seller.dataValues.id,
       sellerName: seller.dataValues.name,
       numbersMatchCount

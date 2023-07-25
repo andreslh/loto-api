@@ -32,6 +32,16 @@ module.exports = {
       clientId: {
         type: Sequelize.INTEGER,
         unique: false,
+        allowNull: true
+      },
+      clientName: {
+        type: Sequelize.STRING,
+        unique: false,
+        allowNull: true
+      },
+      userId: {
+        type: Sequelize.INTEGER,
+        unique: false,
         allowNull: false
       },
       createdAt: {
