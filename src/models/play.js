@@ -26,9 +26,19 @@ module.exports = (sequelize, DataTypes) => {
       },
       clientId: {
         type: DataTypes.INTEGER,
+        allowNull: true,
+        unique: false
+      },
+      clientName: {
+        type: DataTypes.INTEGER,
         allowNull: false,
         unique: false
-      }
+      },
+      userId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        unique: false
+      },
     },
     {}
   );

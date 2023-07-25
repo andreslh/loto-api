@@ -2,6 +2,7 @@ const { Op } = require('sequelize');
 const getUserId = require('../auth/getUserId');
 const { ROLES } = require('../auth/roles');
 const { Client, User, Lottery, Play, sequelize } = require('../models');
+const { handleError } = require('./validator');
 
 const get = async (req, res) => {
   try {
@@ -31,12 +32,12 @@ const post = async (req, res) => {
     userId debe ser de tipo seller, y hay que verificar que el clientId sea un cliente del userId (vendedor)
     lotteryId se debe buscar en la tabla lottery y se toma el id del current lottery
     */
-    const { clientId, n1, n2, n3, n4 } = req.body;
+    const { clientId, clientName, n1, n2, n3, n4 } = req.body;
     const sellerId = await getUserId(req);
     
     const seller = await User.findOne({ where: { id: sellerId } });
     if (seller.role !== ROLES.seller) {
-      return handleError(error, res, 'El usuario que crea el loto debe ser vendedor');
+      return res.status(500).send('El usuario que crea el loto debe ser vendedor');
     }
 
     const lottery = await Lottery.findOne({ where: { current: true } });
@@ -44,16 +45,18 @@ const post = async (req, res) => {
     /*
     Antes de cargar debo verificar que ese mismo cliente no tenga un mismo loto con los mismos numeros para ese mismo lottery
     */
-    const repeatedPlay = await Play.findOne({ where: {
-      clientId, n1, n2, n3, n4, lotteryId: lottery.id
-    }});
+    if (clientId) {
+      const repeatedPlay = await Play.findOne({ where: {
+        clientId, clientName, n1, n2, n3, n4, lotteryId: lottery.id
+      }});
 
-    if (repeatedPlay) {
-      return res.status(500).send('El cliente ya tiene un loto con esos mismos numeros en este sorteo');
+      if (repeatedPlay) {
+        return res.status(400).send('El cliente ya tiene un loto con esos mismos numeros en este sorteo');
+      }
     }
 
     const play = await Play.create({
-      clientId, n1, n2, n3, n4, lotteryId: lottery.id
+      clientId, clientName, n1, n2, n3, n4, lotteryId: lottery.id, userId: sellerId
     });
 
     return res.status(201).json({ play });
