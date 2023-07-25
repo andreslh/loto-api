@@ -47,7 +47,17 @@ const post = async (req, res) => {
     */
     if (clientId) {
       const repeatedPlay = await Play.findOne({ where: {
-        clientId, clientName, n1, n2, n3, n4, lotteryId: lottery.id
+        clientId, n1, n2, n3, n4, lotteryId: lottery.id
+      }});
+
+      if (repeatedPlay) {
+        return res.status(400).send('El cliente ya tiene un loto con esos mismos numeros en este sorteo');
+      }
+    }
+
+    if(clientName) {
+      const repeatedPlay = await Play.findOne({ where: {
+        clientName, n1, n2, n3, n4, lotteryId: lottery.id
       }});
 
       if (repeatedPlay) {

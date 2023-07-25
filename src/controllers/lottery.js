@@ -170,6 +170,7 @@ const remove = async (req, res) => {
     const { id } = req.params;
     const transaction = await sequelize.transaction();
     const deleted = await Lottery.destroy({ where: { id } });
+    console.log(deleted);
     if (deleted) {
       await Winner.destroy({ where: { lotteryId: id } });
       await transaction.commit();

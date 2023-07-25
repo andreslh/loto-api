@@ -31,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       clientName: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
         unique: false
       },
       userId: {
