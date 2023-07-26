@@ -9,14 +9,23 @@ const get = async (req, res) => {
     const userId = await getUserId(req);
     const lottery = await Lottery.findOne({where: { current: true}});
     const plays = await sequelize.query(`
-      select c."id" as "clientId", c."name", p."id", p."n1", p."n2", p."n3", p."n4" from "Plays" p
-      join "Clients" c on p."clientId" = c."id"
-      join "Users" u on c."userId" = u."id"
-      where p."lotteryId" = ${lottery.id} 
-      and u."id" = ${userId}
+      select
+        c."id" as "clientId",
+        c."name",
+        p."clientName",
+        p."id",
+        p."n1",
+        p."n2",
+        p."n3",
+        p."n4"
+      from "Plays" p
+      left outer join "Clients" c on p."clientId" = c."id"
+      where
+        p."lotteryId" = ${lottery.id}  and p."userId" = ${userId}
     `);
     return res.status(200).json({ plays: plays[0] });
   } catch (error) {
+    console.log(error)
     return res.status(500).send(error.message);
   }
 };
